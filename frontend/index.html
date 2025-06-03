@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreelanceHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="loginPage" class="page">
+        <div class="auth-container">
+            <h1><i class="fas fa-handshake"></i> FreelanceHub</h1>
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchTab('register')">Register</button>
+            </div>
+            <form id="loginForm" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="loginUserType">
+                        <option value="client">Client</option>
+                        <option value="freelancer">Freelancer</option>
+                    </select>
+                </div>
+                <button type="submit">Login <i class="fas fa-sign-in-alt"></i></button>
+            </form>
+            <form id="registerForm" class="auth-form hidden">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="registerUserType">
+                        <option value="client">Client</option>
+                        <option value="freelancer">Freelancer</option>
+                    </select>
+                </div>
+                <button type="submit">Register <i class="fas fa-user-plus"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <div id="mainPage" class="page hidden">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-handshake"></i>
+                <h2>FreelanceHub</h2>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span id="userInfo"></span>
+                    <small id="userType"></small>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li>
+                    <i class="fas fa-briefcase"></i>
+                    <span>My Gigs</span>
+                </li>
+                <li>
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                </li>
+                <li>
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+                <li onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <div class="top-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search gigs...">
+                </div>
+                <button id="newGigBtn" class="hidden">
+                    <i class="fas fa-plus"></i> Post New Gig
+                </button>
+            </div>
+
+            <div class="dashboard">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <i class="fas fa-briefcase"></i>
+                        <div class="stat-info">
+                            <h3>Active Gigs</h3>
+                            <p id="activeGigs">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-info">
+                            <h3>Total Freelancers</h3>
+                            <p id="totalFreelancers">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <div class="stat-info">
+                            <h3>Average Rating</h3>
+                            <p>4.8</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <h3>Hours Worked</h3>
+                            <p>124</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Replace your existing gig form with this one -->
+            <div id="gigForm" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Create New Gig</h2>
+                        <button type="button" onclick="toggleGigForm()" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <form id="createGigForm" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <i class="fas fa-heading"></i>
+                            <input type="text" name="title" id="title" placeholder="Gig Title" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-align-left"></i>
+                            <textarea name="description" id="description" placeholder="Describe your services..." required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-dollar-sign"></i>
+                            <input type="number" name="price" id="price" placeholder="Hourly Rate ($)" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-tags"></i>
+                            <input type="text" name="skills" id="skills" placeholder="Skills (comma-separated)" required>
+                        </div>
+                        <div class="image-upload">
+                            <label for="image">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Upload Profile/Work Image (Optional)</span>
+                            </label>
+                            <input type="file" name="image" id="image" accept="image/*">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" onclick="toggleGigForm()" class="cancel-btn">Cancel</button>
+                            <button type="submit" id="submitGigBtn" class="submit-btn">Publish Gig</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+\end{code}
+                <h2 class="section-title">Latest Gigs</h2>
+                <div id="gigs" class="gigs-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
